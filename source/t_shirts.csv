@@ -1,0 +1,81 @@
+t_shirt_id,brand,color,size,price,stock_quantity
+1,Van Heusen,Red,XS,50,24
+2,Van Heusen,Red,S,11,45
+3,Van Heusen,Red,M,25,38
+4,Van Heusen,Red,L,18,23
+5,Van Heusen,Red,XL,44,21
+6,Van Heusen,Blue,XS,47,64
+7,Van Heusen,Blue,S,12,13
+8,Van Heusen,Blue,M,15,37
+9,Van Heusen,Blue,L,24,74
+10,Van Heusen,Blue,XL,48,13
+11,Van Heusen,Black,XS,45,35
+12,Van Heusen,Black,S,44,63
+13,Van Heusen,Black,M,24,67
+14,Van Heusen,Black,L,47,45
+15,Van Heusen,Black,XL,10,30
+16,Van Heusen,White,XS,37,53
+17,Van Heusen,White,S,27,29
+18,Van Heusen,White,M,23,53
+19,Van Heusen,White,L,16,21
+20,Van Heusen,White,XL,34,22
+21,Levi,Red,XS,32,54
+22,Levi,Red,S,48,43
+23,Levi,Red,M,12,68
+24,Levi,Red,L,44,25
+25,Levi,Red,XL,34,20
+26,Levi,Blue,XS,45,47
+27,Levi,Blue,S,50,89
+28,Levi,Blue,M,33,83
+29,Levi,Blue,L,22,100
+30,Levi,Blue,XL,14,15
+31,Levi,Black,XS,24,47
+32,Levi,Black,S,15,39
+33,Levi,Black,M,16,58
+34,Levi,Black,L,27,68
+35,Levi,Black,XL,50,56
+36,Levi,White,XS,20,57
+37,Levi,White,S,32,36
+38,Levi,White,M,27,99
+39,Levi,White,L,14,87
+40,Levi,White,XL,50,31
+41,Nike,Red,XS,44,41
+42,Nike,Red,S,20,69
+43,Nike,Red,M,34,44
+44,Nike,Red,L,50,98
+45,Nike,Red,XL,45,38
+46,Nike,Blue,XS,30,17
+47,Nike,Blue,S,24,14
+48,Nike,Blue,M,30,61
+49,Nike,Blue,L,27,18
+50,Nike,Blue,XL,23,82
+51,Nike,Black,XS,30,37
+52,Nike,Black,S,41,60
+53,Nike,Black,M,39,28
+54,Nike,Black,L,26,27
+55,Nike,Black,XL,25,81
+56,Nike,White,XS,44,43
+57,Nike,White,S,47,64
+58,Nike,White,M,47,61
+59,Nike,White,L,33,38
+60,Nike,White,XL,18,75
+61,Adidas,Red,XS,41,21
+62,Adidas,Red,S,13,24
+63,Adidas,Red,M,19,90
+64,Adidas,Red,L,20,97
+65,Adidas,Red,XL,37,86
+66,Adidas,Blue,XS,14,59
+67,Adidas,Blue,S,34,86
+68,Adidas,Blue,M,39,77
+69,Adidas,Blue,L,26,80
+70,Adidas,Blue,XL,10,97
+71,Adidas,Black,XS,17,97
+72,Adidas,Black,S,44,44
+73,Adidas,Black,M,31,24
+74,Adidas,Black,L,28,65
+75,Adidas,Black,XL,20,68
+76,Adidas,White,XS,10,43
+77,Adidas,White,S,42,32
+78,Adidas,White,M,42,23
+79,Adidas,White,L,50,48
+80,Adidas,White,XL,50,74

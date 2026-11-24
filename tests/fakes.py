@@ -8,7 +8,7 @@ from langchain_core.language_models import BaseChatModel
 from langchain_core.messages import AIMessage, BaseMessage
 from langchain_core.outputs import ChatGeneration, ChatResult
 
-from tshirt_agent.seed_data import DISCOUNTS, t_shirt_rows
+from tshirt_agent.seed_data import load_source
 
 
 class ScriptedChatModel(BaseChatModel):
@@ -50,8 +50,9 @@ def final(text: str) -> AIMessage:
 
 # ---------- ground truth computed in plain Python from the seed rows ----------
 
-ROWS = t_shirt_rows()
-DISCOUNT = dict(DISCOUNTS)
+SOURCE = load_source()
+ROWS = SOURCE.t_shirts
+DISCOUNT = {t_shirt_id: pct for _id, t_shirt_id, pct in SOURCE.discounts}
 
 
 def stock(brand=None, color=None, size=None) -> int:

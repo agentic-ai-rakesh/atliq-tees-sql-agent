@@ -1,10 +1,13 @@
 # AtliQ Tees SQL Agent
 # make setup      create .venv (Python 3.11+), install requirements.txt, create .env, build the database
-# make db         (re)build data/atliq_tshirts.db from the deterministic seed
+# make db         (re)build data/atliq_tshirts.db from source/*.csv
+# make mysql-sql  regenerate source/db_creation_atliq_t_shirts.sql from source/*.csv
 # make backend    FastAPI on http://127.0.0.1:8000 (docs at /docs)
 # make frontend   Streamlit on http://localhost:8501
 # make run        both together (Ctrl+C stops both)
 # make test       run the tests (no API key or network needed)
+# make check      lint + format check + tests + requirements check (pip check)
+# make verify     clean-room check: fresh copy, make setup, make check; report in reports/
 
 ROOT := $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 VENV := $(ROOT)/.venv/bin
@@ -13,10 +16,10 @@ BACKEND_PORT ?= 8000
 FRONTEND_PORT ?= 8501
 export TSHIRT_AGENT_API_URL ?= http://127.0.0.1:$(BACKEND_PORT)
 
-.PHONY: help setup env db mysql-sql backend frontend run test lint format clean
+.PHONY: help setup env db mysql-sql backend frontend run test lint format check verify clean
 
 help:
-	@sed -n 's/^# //p' $(MAKEFILE_LIST) | head -8
+	@grep -E '^# (make |AtliQ)' $(MAKEFILE_LIST) | sed 's/^# //'
 
 setup: env
 	cd "$(ROOT)" && if command -v uv >/dev/null 2>&1; then \
@@ -60,5 +63,22 @@ lint:
 format:
 	cd "$(ROOT)" && "$(VENV)/ruff" check --fix . && "$(VENV)/ruff" format .
 
+check: lint
+	cd "$(ROOT)" && "$(VENV)/python" -m pytest -q -p no:cacheprovider
+	cd "$(ROOT)" && if command -v uv >/dev/null 2>&1; then uv pip check --python .venv/bin/python; \
+		else .venv/bin/python -m pip check; fi
+
+# Copies the files git would publish (tracked + new, not ignored) into an empty folder,
+# then runs make setup and make check there, exactly as a new user would.
+VERIFY_DIR ?= $(or $(TMPDIR),/tmp)/atliq_verify
+verify:
+	rm -rf "$(VERIFY_DIR)" && mkdir -p "$(VERIFY_DIR)" "$(ROOT)/reports"
+	cd "$(ROOT)" && git ls-files -co --exclude-standard -z | xargs -0 tar -cf - | tar -xf - -C "$(VERIFY_DIR)"
+	cd "$(VERIFY_DIR)" && $(MAKE) -s setup && $(MAKE) -s lint && \
+		.venv/bin/python -m pytest -v -p no:cacheprovider | tee "$(ROOT)/reports/test_results.txt" | tail -1 && \
+		(command -v uv >/dev/null 2>&1 && uv pip check --python .venv/bin/python || .venv/bin/python -m pip check) && \
+		.venv/bin/python --version
+	@echo "Clean-room check passed. Test report: reports/test_results.txt"
+
 clean:
-	cd "$(ROOT)" && rm -rf data logs .pytest_cache .ruff_cache && find . -name __pycache__ -prune -exec rm -rf {} +
+	cd "$(ROOT)" && rm -rf data logs reports .pytest_cache .ruff_cache && find . -name __pycache__ -prune -exec rm -rf {} +

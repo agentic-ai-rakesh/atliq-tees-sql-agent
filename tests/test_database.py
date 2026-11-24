@@ -10,20 +10,28 @@ from tshirt_agent.database import (
     describe_tables,
     run_query,
 )
-from tshirt_agent.seed_data import BRANDS, COLORS, SIZES, mysql_script, t_shirt_rows
+from tshirt_agent.seed_data import BRANDS, COLORS, SIZES, mysql_script
 
 
-def test_seed_is_deterministic_and_complete():
-    assert t_shirt_rows() == t_shirt_rows()
+def test_source_data_is_complete_and_valid():
     assert len(ROWS) == len(BRANDS) * len(COLORS) * len(SIZES) == 80
-    assert all(10 <= r[4] <= 50 and 10 <= r[5] <= 100 for r in ROWS)
+    assert {(r[1], r[2], r[3]) for r in ROWS} == {(b, c, s) for b in BRANDS for c in COLORS for s in SIZES}
+    assert all(10 <= r[4] <= 50 and r[5] >= 0 for r in ROWS)
     assert "Van Heusen" in BRANDS  # was misspelled "Van Huesen"
 
 
-def test_mysql_script_has_the_same_data():
+def test_mysql_script_has_the_same_data_as_source():
     script = mysql_script()
     assert "RAND()" not in script and script.count("'Van Heusen'") == 21  # 20 rows + ENUM
-    assert "(80, 'Adidas', 'White', 'XL'" in script
+    first, last = ROWS[0], ROWS[-1]
+    assert f"({first[0]}, '{first[1]}', '{first[2]}', '{first[3]}', {first[4]}, {first[5]})" in script
+    assert f"({last[0]}, '{last[1]}', '{last[2]}', '{last[3]}', {last[4]}, {last[5]})" in script
+
+
+def test_committed_mysql_script_is_up_to_date():
+    from tshirt_agent.seed_data import MYSQL_SCRIPT
+
+    assert MYSQL_SCRIPT.read_text(encoding="utf-8") == mysql_script(), "run: make mysql-sql"
 
 
 def test_schema_lists_tables_values_and_keys(engine):
