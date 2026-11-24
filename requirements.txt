@@ -1,0 +1,19 @@
+# Agent and LLM providers
+langgraph>=1.2,<2
+langchain-core>=1.8,<2
+langchain-google-genai>=4.0,<5
+langchain-openai>=1.8,<2
+# Database and SQL safety
+sqlalchemy>=2.0,<3
+sqlglot>=27,<40
+pymysql>=1.1,<2
+# Backend and UI
+fastapi>=0.115,<1
+uvicorn[standard]>=0.30,<1
+streamlit>=1.50,<2
+requests>=2.32,<3
+python-dotenv>=1.0,<2
+# Development: tests and lint
+pytest>=8,<10
+httpx>=0.27,<1
+ruff>=0.15,<1
